@@ -509,7 +509,11 @@ public class ZKFPDemo extends JFrame{
 		    number |= ((bytes[3] << 24) & 0xFF000000);  
 		    return number;  
 		 }
-	
+	/**
+	 * 打开设备后启动多线程
+	 * @author plzwb
+	 *
+	 */
 		private class WorkThread extends Thread {
 	        @Override
 	        public void run() {
@@ -517,6 +521,7 @@ public class ZKFPDemo extends JFrame{
 	            int ret = 0;
 	            while (!mbStop) {
 	            	templateLen[0] = 2048;
+	            	//采集指纹图像、指纹模板（句柄，图像数据，模板数据，模板数据长度）
 	            	if (0 == (ret = FingerprintSensorEx.AcquireFingerprint(mhDevice, imgbuf, template, templateLen)))
 	            	{
 	            		if (nFakeFunOn == 1)
