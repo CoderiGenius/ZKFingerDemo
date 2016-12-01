@@ -127,12 +127,13 @@ public class ZKFPDemo extends JFrame{
 		this.setTitle("ZKFinger Demo");
 		this.setResizable(false);
 		
+		/**
+		 * Open按钮点击事件
+		 */	
 		btnOpen.addActionListener(new ActionListener() {
 
 			@Override
-			/**
-			 * Open按钮点击事件
-			 */
+
 			public void actionPerformed(ActionEvent e) {
 				// 判断是否已经打开模块
 				if (0 != mhDevice)
@@ -215,7 +216,9 @@ public class ZKFPDemo extends JFrame{
 		});
 		
 		
-		
+		/**
+		 * Close按钮点击事件
+		 */
 		btnClose.addActionListener(new ActionListener() {
 
 			@Override
@@ -227,6 +230,9 @@ public class ZKFPDemo extends JFrame{
 			}
 		});
 		
+		/**
+		 * 注册事件
+		 */
 		btnEnroll.addActionListener(new ActionListener() {
 
 			@Override
@@ -501,7 +507,7 @@ public class ZKFPDemo extends JFrame{
 	    return abyte; 
 	}	 
 		 
-		public static int byteArrayToInt(byte[] bytes) {
+	public static int byteArrayToInt(byte[] bytes) {
 			int number = bytes[0] & 0xFF;  
 		    // "|="按位或赋值。  
 		    number |= ((bytes[1] << 8) & 0xFF00);  
@@ -509,6 +515,7 @@ public class ZKFPDemo extends JFrame{
 		    number |= ((bytes[3] << 24) & 0xFF000000);  
 		    return number;  
 		 }
+	
 	/**
 	 * 打开设备后启动多线程
 	 * @author plzwb
@@ -540,7 +547,9 @@ public class ZKFPDemo extends JFrame{
             					return;
             				}
                     	}
+	            		//存储并显示图像
                     	OnCatpureOK(imgbuf);
+                    	//注册或比对指纹
                     	OnExtractOK(template, templateLen[0]);
 	            	}
 	                try {
@@ -558,6 +567,10 @@ public class ZKFPDemo extends JFrame{
 			}
 	    }
 		
+		/**
+		 * 将图片写入到本地并显示
+		 * @param imgBuf
+		 */
 		private void OnCatpureOK(byte[] imgBuf)
 		{
 			try {
@@ -571,11 +584,13 @@ public class ZKFPDemo extends JFrame{
 		
 		private void OnExtractOK(byte[] template, int len)
 		{
+			//检测按下了注册按钮，进入注册方法
 			if(bRegister)
 			{
 				int[] fid = new int[1];
 				int[] score = new int [1];
                 int ret = FingerprintSensorEx.DBIdentify(mhDB, template, fid, score);
+                //识别成功
                 if (ret == 0)
                 {
                     textArea.setText("the finger already enroll by " + fid[0] + ",cancel enroll");
@@ -612,6 +627,7 @@ public class ZKFPDemo extends JFrame{
 			}
 			else
 			{
+				//按下了对比按钮，进入对比方法
 				if (bIdentify)
 				{
 					int[] fid = new int[1];
@@ -627,6 +643,7 @@ public class ZKFPDemo extends JFrame{
                     }
                         
 				}
+				//按下了第三个按钮
 				else
 				{
 					if(cbRegTemp <= 0)
