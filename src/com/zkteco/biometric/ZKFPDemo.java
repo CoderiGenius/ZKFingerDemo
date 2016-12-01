@@ -130,8 +130,11 @@ public class ZKFPDemo extends JFrame{
 		btnOpen.addActionListener(new ActionListener() {
 
 			@Override
+			/**
+			 * Open按钮点击事件
+			 */
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
+				// 判断是否已经打开模块
 				if (0 != mhDevice)
 				{
 					//already inited
@@ -145,11 +148,13 @@ public class ZKFPDemo extends JFrame{
 				bIdentify = false;
 				iFid = 1;
 				enroll_idx = 0;
+				//判断是否初始化成功
 				if (FingerprintSensorErrorCode.ZKFP_ERR_OK != FingerprintSensorEx.Init())
 				{
 					textArea.setText("Init failed!");
 					return;
 				}
+				//判断是否有设备连接
 				ret = FingerprintSensorEx.GetDeviceCount();
 				if (ret < 0)
 				{
@@ -157,12 +162,14 @@ public class ZKFPDemo extends JFrame{
 					FreeSensor();
 					return;
 				}
+				//打开设备
 				if (0 == (mhDevice = FingerprintSensorEx.OpenDevice(0)))
 				{
 					textArea.setText("Open device fail, ret = " + ret + "!");
 					FreeSensor();
 					return;
 				}
+				//初始化算法库
 				if (0 == (mhDB = FingerprintSensorEx.DBInit()))
 				{
 					textArea.setText("Init DB fail, ret = " + ret + "!");
@@ -176,6 +183,7 @@ public class ZKFPDemo extends JFrame{
 				{
 					nFmt = 1;	//ISO
 				}
+				//设置参数（句柄、参数代码、参数数据长度）、句柄由初始化算法库获得
 				FingerprintSensorEx.DBSetParameter(mhDB,  5010, nFmt);				
 				//For ISO/Ansi End
 				
@@ -387,7 +395,9 @@ public class ZKFPDemo extends JFrame{
             }
 		});
 	}
-	
+	/**
+	 * 关闭资源
+	 */
 	private void FreeSensor()
 	{
 		mbStop = true;
